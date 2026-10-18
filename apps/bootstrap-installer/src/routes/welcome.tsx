@@ -17,11 +17,11 @@ import { startInstall } from '../store'
  */
 export default function Welcome() {
   return (
-    <div className="hermes-fade-in flex h-full flex-col items-center justify-center gap-10 px-12 py-10">
-      {/* Hero — same recipe the desktop's chat/intro.tsx uses */}
-      <div className="w-full max-w-2xl min-w-0 text-center">
+    <div className="install-welcome hermes-fade-in h-full px-10 py-9">
+      <section className="install-intro min-w-0" aria-labelledby="install-title">
+        <p className="install-kicker">Local setup</p>
         <p
-          className="fit-text mx-auto mb-4 w-full font-['Collapse'] font-bold uppercase leading-[0.9] tracking-[0.08em] text-midground mix-blend-plus-lighter dark:text-foreground/90"
+          className="fit-text mb-5 w-full font-['Collapse'] font-bold uppercase leading-[0.9] tracking-[0.08em] text-midground mix-blend-plus-lighter dark:text-foreground/90"
           style={
             {
               '--fit-text-line-height': '0.9',
@@ -36,13 +36,49 @@ export default function Welcome() {
           <span aria-hidden="true">HERMES AGENT</span>
         </p>
 
-        <p className="m-0 text-center text-base leading-normal tracking-tight text-muted-foreground">
-          The agent that grows with you. We&rsquo;ll set things up in the
-          background &mdash; takes a few minutes.
+        <h1 id="install-title" className="m-0 max-w-xl text-2xl font-semibold tracking-tight text-foreground">
+          Install the local agent and desktop app.
+        </h1>
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
+          Setup prepares the runtimes, Hermes repository and required packages on this computer. Every stage remains
+          visible while it runs.
         </p>
-      </div>
 
-      <HackeryButton label="Install" onClick={() => void startInstall()} />
+        <div className="mt-7 flex flex-wrap items-center gap-4">
+          <HackeryButton label="Install Hermes" onClick={() => void startInstall()} />
+          <p className="m-0 text-xs text-muted-foreground">You can cancel during setup or inspect the live log.</p>
+        </div>
+      </section>
+
+      <aside className="install-manifest" aria-label="Installation stages">
+        <div className="install-manifest-heading">
+          <span>Installation manifest</span>
+          <span>3 groups</span>
+        </div>
+        <ol>
+          <li>
+            <span className="install-manifest-number">01</span>
+            <div>
+              <strong>Local runtime</strong>
+              <span>System packages, uv and a Python environment</span>
+            </div>
+          </li>
+          <li>
+            <span className="install-manifest-number">02</span>
+            <div>
+              <strong>Hermes workspace</strong>
+              <span>Repository and Python dependencies</span>
+            </div>
+          </li>
+          <li>
+            <span className="install-manifest-number">03</span>
+            <div>
+              <strong>Desktop app</strong>
+              <span>Node runtime and the Hermes desktop build</span>
+            </div>
+          </li>
+        </ol>
+      </aside>
     </div>
   )
 }

@@ -54,8 +54,8 @@ export default function ProgressScreen({ bootstrap }: ProgressProps) {
   const title = bootstrap.status === 'completed' ? 'Done' : isUpdate ? 'Updating Hermes' : 'Setting up Hermes Agent'
 
   const description = isUpdate
-    ? 'Hermes is updating to the latest version — this only takes a moment.'
-    : 'This is a one-time setup. The Hermes installer is downloading dependencies and configuring your machine. Subsequent launches will skip this step.'
+    ? 'Hermes is downloading, rebuilding and installing the latest version.'
+    : 'This one-time setup prepares the local runtimes, repository, dependencies and desktop app. Each stage stays visible below.'
 
   const pct = Math.round(progress.fraction * 100)
 
@@ -82,7 +82,14 @@ export default function ProgressScreen({ bootstrap }: ProgressProps) {
               </span>
               <span className="tabular-nums">{pct}%</span>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-(--ui-bg-tertiary)">
+            <div
+              aria-label={isUpdate ? 'Update progress' : 'Installation progress'}
+              aria-valuemax={100}
+              aria-valuemin={0}
+              aria-valuenow={pct}
+              className="h-1.5 w-full overflow-hidden rounded-full bg-(--ui-bg-tertiary)"
+              role="progressbar"
+            >
               <div
                 className="h-full bg-primary transition-all duration-300 ease-out"
                 style={{ width: `${Math.max(2, progress.fraction * 100)}%` }}
@@ -108,6 +115,7 @@ export default function ProgressScreen({ bootstrap }: ProgressProps) {
 
               return (
                 <li
+                  aria-current={rec.state === 'running' ? 'step' : undefined}
                   className={clsx(
                     'flex items-center gap-2.5 px-3 py-1.5 text-sm',
                     rec.state === 'running'
@@ -127,7 +135,7 @@ export default function ProgressScreen({ bootstrap }: ProgressProps) {
         </div>
 
         {showLogs && (
-          <div className="flex w-1/2 flex-col border-l border-(--stroke-nous)">
+          <div className="flex w-1/2 flex-col border-l border-(--stroke-nous)" id="installer-log">
             <div className="flex shrink-0 items-center justify-between border-b border-(--stroke-nous) px-3 py-2 text-xs">
               <span className="font-medium text-foreground/80">Live output</span>
               <span className="tabular-nums text-muted-foreground">{bootstrap.logs.length} lines</span>
@@ -152,6 +160,7 @@ export default function ProgressScreen({ bootstrap }: ProgressProps) {
 
       <div className="flex shrink-0 items-center justify-between border-t border-(--stroke-nous) px-6 py-3">
         <button
+          aria-expanded={showLogs}
           className="inline-flex cursor-pointer items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
           onClick={() => setShowLogs((v) => !v)}
           type="button"

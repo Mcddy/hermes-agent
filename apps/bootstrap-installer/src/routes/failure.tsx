@@ -47,7 +47,7 @@ export default function Failure({ bootstrap }: FailureProps) {
           <span aria-hidden="true">{isUpdate ? 'Update didn\u2019t finish' : 'Install didn\u2019t finish'}</span>
         </p>
 
-        <p className="m-0 mx-auto max-w-xl text-center text-sm leading-normal tracking-tight text-muted-foreground">
+        <p className="m-0 mx-auto max-w-xl text-center text-sm leading-normal tracking-tight text-muted-foreground" role="alert">
           {bootstrap.error ??
             (isUpdate
               ? 'Something went wrong during the update.'
